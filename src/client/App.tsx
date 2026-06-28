@@ -60,12 +60,14 @@ export default function App() {
   }, [matchId, userId, loadMatch]);
 
   if (screen === "admin" && !matchId) {
+    if (!tgReady) return <div className="loader">Загрузка...</div>;
     return (
       <AdminPanel
         userId={userId}
         userName={userName}
         tgReady={tgReady}
         inTelegram={inTelegram}
+        hasAuth={hasAuth}
         onCreated={(m, link) => {
           setMatch(m);
           setMatchId(m.id);
@@ -128,12 +130,14 @@ function AdminPanel({
   userName,
   tgReady,
   inTelegram,
+  hasAuth,
   onCreated,
 }: {
   userId?: number;
   userName?: string;
   tgReady: boolean;
   inTelegram: boolean;
+  hasAuth: boolean;
   onCreated: (match: PublicMatch, link: string) => void;
 }) {
   const [format, setFormat] = useState<MatchFormat>("bo3");
