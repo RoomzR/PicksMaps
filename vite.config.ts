@@ -9,6 +9,8 @@ export default defineConfig({
   build: {
     outDir: "../../dist/client",
     emptyOutDir: true,
+    modulePreload: false,
+    target: "es2018",
   },
   server: {
     port: 5173,

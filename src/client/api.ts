@@ -15,10 +15,15 @@ export function getAuthToken(): string | null {
 
 export function initTelegram() {
   const tg = getTg();
-  tg?.ready();
-  tg?.expand();
-  tg?.setHeaderColor("#0f0f14");
-  tg?.setBackgroundColor("#0f0f14");
+  if (!tg) return;
+  try {
+    tg.ready();
+    tg.expand();
+    tg.setHeaderColor("#0f0f14");
+    tg.setBackgroundColor("#0f0f14");
+  } catch {
+    /* older Telegram clients */
+  }
 }
 
 function parseUserFromInitData(initData?: string) {
