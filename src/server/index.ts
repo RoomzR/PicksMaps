@@ -37,6 +37,29 @@ app.get("/api/health", (_req, res) => {
   res.json({ ok: true });
 });
 
+app.get("/test", (_req, res) => {
+  res.type("html").send(`<!DOCTYPE html>
+<html lang="ru"><head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>PicksMaps Test</title>
+<style>body{margin:0;padding:40px 20px;background:#0f0f14;color:#fff;font:18px system-ui;text-align:center}
+.ok{color:#00b894;font-size:24px;font-weight:bold;margin-bottom:16px}</style>
+<script src="https://telegram.org/js/telegram-web-app.js"><\/script>
+<script>
+try{var t=window.Telegram&&window.Telegram.WebApp;if(t){t.ready();t.expand();}}catch(e){}
+<\/script>
+</head><body>
+<div class="ok">✓ PicksMaps работает</div>
+<p>Если видите это — сервер и Telegram WebView OK.</p>
+<p id="tg"></p>
+<script>
+var t=window.Telegram&&window.Telegram.WebApp;
+document.getElementById('tg').textContent=t?'Telegram: '+t.platform:'Не в Telegram';
+<\/script>
+</body></html>`);
+});
+
 app.get("/api/me", (req, res) => {
   const user = parseTelegramUser(
     {
