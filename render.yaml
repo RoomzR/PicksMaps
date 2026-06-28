@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: picksmaps
+    runtime: node
+    plan: free
+    buildCommand: npm install && npm run build
+    startCommand: npm start
+    healthCheckPath: /api/health
+    envVars:
+      - key: NODE_ENV
+        value: production
+      - key: BOT_USERNAME
+        value: picksmapsmeta_bot
+      - key: ADMIN_IDS
+        sync: false
+      - key: BOT_TOKEN
+        sync: false
+      - key: WEBAPP_URL
+        sync: false
