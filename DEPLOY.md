@@ -1,6 +1,50 @@
 # Деплой PicksMaps
 
-## 1cloud.ru (рекомендуется из Беларуси)
+## Amvera.ru (рекомендуется — проще всего из Беларуси)
+
+**Плюсы:** HTTPS сразу (`ваш-проект.amvera.app`), оплата из РБ, 24/7, без VPS/nginx  
+**Сайт:** https://amvera.ru
+
+### Шаг 1 — Создайте приложение
+1. https://console.amvera.ru → **Создать проект**
+2. Название: `picksmaps`
+3. Тип: **Node.js Server**
+
+### Шаг 2 — Загрузите код
+
+**Вариант A — через Git (рекомендуется):**
+1. В Amvera скопируйте **Git URL** проекта
+2. На Mac:
+```bash
+cd /Users/roomz/Documents/PicksMaps
+git remote add amvera ССЫЛКА_ИЗ_AMVERA
+git push amvera main
+```
+
+**Вариант B — через интерфейс:**
+1. Загрузите ZIP проекта (без `node_modules`)
+
+### Шаг 3 — Переменные окружения
+
+В Amvera → **Переменные**:
+```
+BOT_TOKEN=ваш_токен
+BOT_USERNAME=picksmapsmeta_bot
+ADMIN_IDS=1098436562
+WEBAPP_URL=https://picksmaps.amvera.app
+```
+(`WEBAPP_URL` = ваш URL из панели Amvera, вкладка «Домены»)
+
+### Шаг 4 — Деплой
+Amvera соберёт проект автоматически (файл `amvera.yaml` уже в проекте).  
+Дождитесь статуса **Running**.
+
+### Шаг 5 — Проверка
+@picksmapsmeta_bot → `/app`
+
+---
+
+## 1cloud.ru (VPS)
 
 **Плюсы:** ДЦ в **Беларуси**, оплата картой РБ / ЕРИП / ₽, 24/7, от ~509 ₽/мес  
 **Бонус:** ~500 ₽ на тест при регистрации

@@ -6,7 +6,9 @@ import type { Match } from "../shared/types.js";
 import { CS2_MAPS } from "../shared/types.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
-const dataDir = process.env.DATA_DIR || path.join(__dirname, "../../data");
+const dataDir =
+  process.env.DATA_DIR ||
+  (fs.existsSync("/data") ? "/data" : path.join(__dirname, "../../data"));
 const dbPath = path.join(dataDir, "picksmaps.db");
 
 let db: Database.Database;
