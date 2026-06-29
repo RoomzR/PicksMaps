@@ -21,6 +21,7 @@ import { broadcastMatch, subscribeClient } from "./ws.js";
 import { startBot } from "./bot.js";
 import { buildMatchLink, isAdmin } from "./config.js";
 import { parseTelegramUser } from "./telegram-auth.js";
+import { notifyAdminVetoComplete } from "./telegram-notify.js";
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 const PORT = Number(process.env.PORT) || 3000;
@@ -178,6 +179,9 @@ app.post("/api/match/:id/veto", (req, res) => {
   try {
     const match = performVetoAction(req.params.id, user.userId, map);
     broadcastMatch(match);
+    if (match.status === "finished") {
+      void notifyAdminVetoComplete(match);
+    }
     res.json(getPublicMatchView(match, user.userId));
   } catch (e) {
     if (e instanceof MatchError) {
@@ -204,6 +208,9 @@ app.post("/api/match/:id/side", (req, res) => {
   try {
     const match = pickSide(req.params.id, user.userId, side);
     broadcastMatch(match);
+    if (match.status === "finished") {
+      void notifyAdminVetoComplete(match);
+    }
     res.json(getPublicMatchView(match, user.userId));
   } catch (e) {
     if (e instanceof MatchError) {

@@ -145,6 +145,39 @@ export function formatLabel(format: MatchFormat): string {
   return labels[format];
 }
 
+function teamDisplayName(match: Match, team: TeamSlot): string {
+  return team === "A" ? match.teamAName : match.teamBName;
+}
+
+/** Текстовая сводка пик/бан для трансляции и уведомления админа */
+export function formatVetoBroadcast(match: Match): string {
+  const lines = ["✅ Пик/бан завершен.", ""];
+
+  for (const entry of match.history) {
+    const team = teamDisplayName(match, entry.team);
+
+    if (entry.action === "ban") {
+      lines.push(`${team} BANS ${entry.map}`);
+    } else if (entry.action === "pick") {
+      const sidePicker =
+        entry.sideBy && entry.sideBy !== "knife"
+          ? teamDisplayName(match, entry.sideBy)
+          : null;
+      if (entry.side && sidePicker) {
+        lines.push(
+          `${team} PICKS ${entry.map} — ${sidePicker} starts ${entry.side}`
+        );
+      } else {
+        lines.push(`${team} PICKS ${entry.map}`);
+      }
+    } else if (entry.action === "decider") {
+      lines.push(`Decider: ${entry.map} — knife round`);
+    }
+  }
+
+  return lines.join("\n");
+}
+
 export function actionLabel(step: VetoStep, teamAName: string, teamBName: string): string {
   const teamName = step.team === "A" ? teamAName : teamBName;
   switch (step.action) {
