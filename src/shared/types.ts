@@ -149,6 +149,29 @@ function teamDisplayName(match: Match, team: TeamSlot): string {
   return team === "A" ? match.teamAName : match.teamBName;
 }
 
+function pickSideInfo(
+  match: Match,
+  entry: VetoHistoryEntry
+): { side?: Side; sideBy?: TeamSlot | "knife" } {
+  const picked = match.pickedMaps.find(
+    (p) => p.map === entry.map && p.pickedBy === entry.team
+  );
+  return {
+    side: picked?.side ?? entry.side,
+    sideBy: picked?.sideBy ?? entry.sideBy,
+  };
+}
+
+export function formatSideStart(
+  match: Match,
+  sideBy: TeamSlot | "knife" | undefined,
+  side: Side | undefined
+): string | null {
+  if (sideBy === "knife") return "knife round";
+  if (!side || !sideBy) return null;
+  return `${teamDisplayName(match, sideBy)} starts ${side}`;
+}
+
 /** Текстовая сводка пик/бан для трансляции и уведомления админа */
 export function formatVetoBroadcast(match: Match): string {
   const lines = ["✅ Пик/бан завершен.", ""];
@@ -159,14 +182,10 @@ export function formatVetoBroadcast(match: Match): string {
     if (entry.action === "ban") {
       lines.push(`${team} BANS ${entry.map}`);
     } else if (entry.action === "pick") {
-      const sidePicker =
-        entry.sideBy && entry.sideBy !== "knife"
-          ? teamDisplayName(match, entry.sideBy)
-          : null;
-      if (entry.side && sidePicker) {
-        lines.push(
-          `${team} PICKS ${entry.map} — ${sidePicker} starts ${entry.side}`
-        );
+      const { side, sideBy } = pickSideInfo(match, entry);
+      const sideLabel = formatSideStart(match, sideBy, side);
+      if (sideLabel) {
+        lines.push(`${team} PICKS ${entry.map} — ${sideLabel}`);
       } else {
         lines.push(`${team} PICKS ${entry.map}`);
       }

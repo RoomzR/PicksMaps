@@ -503,8 +503,8 @@ function Results({ match }: { match: PublicMatch }) {
             <span className="result-side">
               {p.sideBy === "knife"
                 ? "🔪 Knife"
-                : p.side
-                  ? p.side
+                : p.side && p.sideBy && p.sideBy !== "knife"
+                  ? `${p.sideBy === "A" ? match.teamAName : match.teamBName} starts ${p.side}`
                   : "—"}
             </span>
           </div>
@@ -527,7 +527,11 @@ function History({ match }: { match: PublicMatch }) {
               {h.action === "ban" ? "BAN" : h.action === "pick" ? "PICK" : "DEC"}
             </span>
             <span>{h.map}</span>
-            {h.side && <span className="side-tag">{h.side}</span>}
+            {h.side && h.sideBy && h.sideBy !== "knife" && (
+              <span className="side-tag">
+                {h.sideBy === "A" ? match.teamAName : match.teamBName} {h.side}
+              </span>
+            )}
           </div>
         ))}
       </div>

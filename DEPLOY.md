@@ -30,7 +30,7 @@ git push amvera main
 ```
 BOT_TOKEN=ваш_токен
 BOT_USERNAME=picksmapsmeta_bot
-ADMIN_IDS=1098436562
+ADMIN_IDS=1098436562,1017459003,534367398,6731830982
 WEBAPP_URL=https://picksmaps.amvera.app
 ```
 (`WEBAPP_URL` = ваш URL из панели Amvera, вкладка «Домены»)
